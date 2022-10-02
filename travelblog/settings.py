@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #Local apps installed
+    'travelblog.articles',
+    #Remote apps installed
+    'tinymce',
+    'adminsortable2',
 ]
 
 MIDDLEWARE = [
