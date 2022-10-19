@@ -40,8 +40,10 @@ INSTALLED_APPS = [
     #Local apps installed
     'travelblog.articles',
     #Remote apps installed
+    'mptt',
     'tinymce',
     'adminsortable2',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
