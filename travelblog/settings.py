@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     #Local apps installed
     'travelblog.articles',
     'travelblog.drf',
+    'travelblog.frontend',
     #Remote apps installed
     'mptt',
     'tinymce',
