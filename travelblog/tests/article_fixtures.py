@@ -1,5 +1,5 @@
 import pytest
-from travelblog.articles.models import Category, Article, City, Country
+from travelblog.articles.models import Category, Article, City, Country, HomePage
 
 @pytest.fixture
 def single_country(db):
@@ -47,7 +47,16 @@ def category_with_multiple_children(db):
     return category
 
 @pytest.fixture
-def single_article_with_category(db,single_city,single_country):
+def single_homepage_style(db):
+    homepage = HomePage.objects.create(
+        header='default',
+        subheader='default',
+        style='C'
+    )
+    return homepage
+
+@pytest.fixture
+def single_article_with_category(db,single_city,single_country,single_homepage_style):
     
     article = Article.objects.create(
         title='default',
@@ -55,6 +64,23 @@ def single_article_with_category(db,single_city,single_country):
         body='deault',
         country=single_country,
         city=single_city,
+        is_visible=True,
+        featured_home=False,
+    )
+    return article
+
+@pytest.fixture
+def single_article_with_homepage_style(
+    db,single_city,single_country,single_homepage_style
+):
+    
+    article = Article.objects.create(
+        title='default',
+        slug='default',
+        body='deault',
+        country=single_country,
+        city=single_city,
+        homepage=single_homepage_style,
         is_visible=True,
         featured_home=False,
     )

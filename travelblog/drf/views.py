@@ -47,3 +47,13 @@ class ArticleByCategory(APIView):
         queryset = Article.objects.filter(category__slug=query)
         serializer = ArticleSerializer(queryset, many=True)
         return Response(serializer.data)
+
+class ArticleByHomepageStyle(APIView):
+    """
+    Get an article by the homepage's style 
+    """
+
+    def get(self, request, query=None):
+        queryset = Article.objects.filter(homepage__style=query)
+        serializer = ArticleSerializer(queryset, many=True)
+        return Response(serializer.data)
