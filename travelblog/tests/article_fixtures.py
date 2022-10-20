@@ -58,7 +58,5 @@ def single_article_with_category(db,single_city,single_country):
         is_visible=True,
         featured_home=False,
     )
-    article.category == Category.objects.create(name='parent',slug='parent')
-
     return article
 

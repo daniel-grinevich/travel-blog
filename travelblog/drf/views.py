@@ -28,6 +28,16 @@ class CategoryListTemplate(RetrieveAPIView):
         serializer = CategorySerializer(queryset, many=True)
         return Response({'serializer': serializer.data})
 
+class ArticleList(APIView):
+    """
+    Get all articles 
+    """
+
+    def get(self, request, query=None):
+        queryset = Article.objects.all()
+        serializer = ArticleSerializer(queryset, many=True)
+        return Response(serializer.data)
+
 class ArticleByCategory(APIView):
     """
     Get an article by the category 

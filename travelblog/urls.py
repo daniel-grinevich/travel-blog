@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/articles/category/all/', drfview.CategoryList.as_view()),
     path('api/articles/category/all/view/', drfview.CategoryListTemplate.as_view()),
+    path('api/articles/all/', drfview.ArticleList.as_view()),
     path('api/articles/category/<str:query>/', drfview.ArticleByCategory.as_view()),
 ]
 
