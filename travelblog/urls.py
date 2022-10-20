@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from travelblog.drf import views as drfview
 
 urlpatterns = [
@@ -23,7 +23,8 @@ urlpatterns = [
     path('api/articles/category/all/view/', drfview.CategoryListTemplate.as_view()),
     path('api/articles/all/', drfview.ArticleList.as_view()),
     path('api/articles/category/<str:query>/', drfview.ArticleByCategory.as_view()),
-     path('api/articles/homepage/<str:query>/', drfview.ArticleByHomepageStyle.as_view()),
+    path('api/articles/homepage/<str:query>/', drfview.ArticleByHomepageStyle.as_view()),
+     path('', include('travelblog.frontend.urls')),
 ]
 
 admin.site.site_header = f"Mili's admin protal"
