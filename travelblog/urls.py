@@ -15,7 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from travelblog.drf import views as drfview
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/articles/category/all/', drfview.CategoryList.as_view()),
+    path('api/articles/category/all/view/', drfview.CategoryListTemplate.as_view()),
+    path('api/articles/category/<str:query>/', drfview.ArticleByCategory.as_view()),
 ]
+
+admin.site.site_header = f"Mili's admin protal"
+admin.site.site_title = f"Mili's admin protal"
+admin.site.index_title = "Hello Mili!"
