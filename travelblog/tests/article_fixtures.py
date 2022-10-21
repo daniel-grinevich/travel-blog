@@ -56,7 +56,7 @@ def single_homepage_style(db):
     return homepage
 
 @pytest.fixture
-def single_article_with_category(db,single_city,single_country,single_homepage_style):
+def single_article_with_category(db,single_city,single_country):
     
     article = Article.objects.create(
         title='default',

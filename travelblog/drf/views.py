@@ -3,8 +3,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.renderers import TemplateHTMLRenderer
-from travelblog.articles.models import Category, Article
-from travelblog.drf.serializer import CategorySerializer, ArticleSerializer
+from travelblog.articles.models import Category, Article, HomePage
+from travelblog.drf.serializer import (
+    CategorySerializer, ArticleSerializer, HomePageSerializer
+)
 
 class CategoryList(APIView):
     """
@@ -54,4 +56,22 @@ class ArticleByHomepageStyle(APIView):
     def get(self, request, query=None):
         queryset = Article.objects.filter(homepage__style=query)
         serializer = ArticleSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+class HomePageList(APIView):
+    """
+    Get homepage styles and linked articles
+    """
+
+    def get(self, request, query=None):
+        queryset = HomePage.objects.all()
+        serializer = HomePageSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+class HomePageActiveArticleList(APIView):
+    "get homepage styles with active articles"
+
+    def get(self, request, query=None):
+        queryset = HomePage.objects.all().filter(article__featured_home=True)
+        serializer = HomePageSerializer(queryset, many=True)
         return Response(serializer.data)

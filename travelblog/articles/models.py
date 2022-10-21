@@ -154,6 +154,7 @@ class Article(models.Model):
     )
     homepage = models.ForeignKey(
         HomePage,
+        related_name='article',
         null=True,
         on_delete=models.PROTECT,
     )
