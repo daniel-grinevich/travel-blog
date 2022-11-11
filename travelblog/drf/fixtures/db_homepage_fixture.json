@@ -1,0 +1,51 @@
+[{
+    "model": "frontend.homepage",
+    "id": "1",
+    "fields": {
+        "header": "Hero",
+        "subheader": "Hero",
+        "style": "H",
+        "rank": "1"
+    }
+  },
+  {
+    "model": "frontend.homepage",
+    "id": "2",
+    "fields": {
+        "header": "Featured",
+        "subheader": "Featured",
+        "style": "F",
+        "rank": "2"
+    }
+  },
+  {
+    "model": "frontend.homepage",
+    "id": "3",
+    "fields": {
+        "header": "Recent",
+        "subheader": "Recent",
+        "style": "R",
+        "rank": "3"
+    }
+  },
+  {
+    "model": "frontend.homepage",
+    "id": "4",
+    "fields": {
+        "header": "Scroll",
+        "subheader": "Scroll",
+        "style": "S",
+        "rank": "4"
+    }
+  },
+  {
+    "model": "frontend.homepage",
+    "id": "5",
+    "fields": {
+        "header": "Cities",
+        "subheader": "Cities",
+        "style": "C",
+        "rank": "5"
+    }
+  }]
+  

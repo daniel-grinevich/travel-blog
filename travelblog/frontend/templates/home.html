@@ -1,12 +1,292 @@
 {% extends "layout.html" %}
 {% load static %}
 {% block content %}
-    {% for s in serializer %}
-        <p>{{ s.title }}</p>
-        <p>{{ s.slug }}</p>
-        {{ s.body | safe }}
-        <p>{{ s.country }}</p>
-        <p>{{ s.city }}</p>
-        <p>{{ s.homepage }}</p>
+    {% for s in sections %}
+        <!-- First Section -->
+        {% if s.style == 'H'%}
+        <section class = "hero">
+            {% if forloop.first %}
+            <div class="hero-container">
+                <div class="hero-text">
+                    <h2 style="color:white;">{{s.header}}</h2>
+                </div>
+                <nav class="nav">
+                    <div class="nav-links">
+                        <div class="dropdown">
+                            <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+                            <div id="myDropdown" class="dropdown-content">
+                                <a href="#">Link 1</a>
+                                <a href="#">Link 2</a>
+                                <a href="#">Link 3</a>
+                            </div>
+                        </div>
+                        <a>About</a>
+                        <a>Contact</a>
+                    </div>
+                    <div class="offset-nav">
+                    </div>
+                </nav>
+            </div>
+            {% for h in hero %}
+            <video id="hero-video" autoplay muted loop>
+                <source src="{{ h.video_file.url}}" type="video/mp4">
+            </video>
+            {% endfor %}
+            {% endif %}
+        </section>
+        {% endif %}
+        <!-- Second Section -->
+        <!-- {% if s.style == 'F'%}
+        <section class="featured">
+            <h3 class="counter">01</h3>
+            <div class="row">
+
+                <div class="col-2 margin-136">
+                    <div class="container">
+                        <div class="text">
+                            <h2 class="">{{ featured.title }}</h2>
+                            
+                            <h4 class="">
+                                {{featured.body|slice:":100"}}
+                            </h4>  
+                
+                        </div>
+
+                        
+                        <div class="progress-bar">
+                            <div class="completed-bar">
+                            </div>
+                        </div>
+                        <div class="selector">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-2">
+                    <div class="square-box">
+                        <div class="info">
+                            <p class="city-box">{{featured.city.name}}, {{featured.country.name}}</p>
+                            <p class="date-box">{{featured.created_at | date:'b d, Y' | title}}</p>
+                        </div>
+                        <div class="pic-box">
+                            <img src="{{ featured.featured_image.url }}">
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
+        </section> 
+        {% endif %} -->
+        {% if s.style == 'F'%}
+            <section class="feat-wrap">
+                <div class="feat-left">
+                    <h2>01</h2>
+                    <div class="feat-text">
+                        {% for f in featured %}
+                        {% if forloop.first %}
+                        <h2 class="show">{{f.title}}</h2>
+                        <h4 class="show">
+                            {{ f.body }}
+                        </h4>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="feat-progress">
+                        <div class="progress-bar"></div>
+                        <div class="completed-bar"></div>
+                    </div>
+                    <div class="selector">
+                        <div class="dot prev"></div>
+                        <div class="dot next"></div>
+                    </div>
+                </div>
+                <div class="feat-right">
+                    <div class="feat-container">
+                        <div class="outline-box">
+                        </div>
+                        
+                        <div class="feature-img">
+                            {% for f in featured %}
+                                {% if forloop.first %}
+                                    <img id=img-{{f.slug}} class="show" src="{{ f.featured_image.url }}">
+                                {% endif %}
+                            {%endfor%}
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        {% endif %}
+        <!-- First Section -->
+        {% if s.style == 'C'%}
+        <section class="cities">
+            <div class="grid-item-1">
+                <div class="title">
+                    <h3>Featured Cities</h3>
+                </div>
+                <div class="city-list">
+                    {% for c in city %}
+                    <a id={{c.slug}} href="{% url 'article' slug=c.slug %}">
+                        {{c.city.name}}
+                    </a>
+                    {% endfor %}
+                </div>
+                <div class="button">
+                    <a href="#" class="see-all">
+                        <h3>SEE ALL</h3>
+                        <div class="btn-dot"></div>
+                    </a>
+                </div>
+            </div>
+            <div class="grid-item-2">
+                <div class="line">
+                    <div class="small-city-text">
+                        <p>One Week In London</p>
+                    </div>
+                    <div class="city-img">
+                        {% for c in city %}
+                            {% if forloop.first %}
+                                <img id=img-{{c.slug}} class="show" src="{{ c.featured_image.url }}">
+                            {% else %}
+                                <img id=img-{{c.slug}} class="hidden" src="{{ c.featured_image.url }}">
+                            {% endif %}
+
+                            
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+        <!-- First Section -->
+        {% if s.style == 'R'%}
+            
+                <section class="recent">
+
+                    <div class="recent-title">
+                        <div class="recent-card">
+                            <h4>Recent Travels</h4>
+                        </div> 
+                    </div>
+                    <div class="offset">
+                    </div>
+                    
+                    <div class="recent-grid">
+                        {% for r in recent %}
+                        
+                        <div class="card" style="background-image: url({{ r.featured_image.url }})">
+                            <div class="top-card">
+                                <h2 style="font-size:32px">{{r.title}}</h2>
+                                <h4>{{r.city.name}},{{r.country.name}}</h4>
+                            </div>
+                            <div class="bottom-card">
+                                <h4>{{r.created_at | date:'b d, Y' | title}}</h4>
+                            </div>
+    
+                            
+                            
+                        </div>
+                        
+                        
+                        {% endfor %}
+                    </div>
+                </section>
+           
+        {% endif %}
+        <!-- First Section -->
+        {% if s.style == 'S'%}
+        <section class="scroll">
+            <div class="scroll-title">
+            <h3>Culture Trip</h3>
+            <div class="scroll-btn">
+                
+            </div>
+            </div>
+            <div class="items">
+                {% for s in scroll %}
+                    <div class="item item1">
+                        <div class="scroll-grid">
+                            <div class="top">
+                                <p>{{s.title}}</p>
+                                <h1>{{ forloop.counter }}</h1>
+                            </div>
+                            <div class="bottom" style="background-image: url({{ s.featured_image.url }}">
+                                
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
     {% endfor %}
+
+    <script>
+        const slider = document.querySelector('.items');
+        const cityImgTag = document.querySelectorAll('section.cities div.grid-item-2 img');
+        const cityATag = document.querySelectorAll('section.cities div.city-list a');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        let id;
+        let q;
+
+        cityATag.forEach(a => {
+            a.addEventListener('mouseover', function() {
+                id = a.id
+                for (const b of cityImgTag) {
+                    b.classList.remove("show")
+                    b.classList.add("hidden")
+                }
+                let q = document.getElementById("img-"+id)
+                q.classList.remove("hidden")
+                q.classList.add("show")
+            })
+
+        });
+
+
+        slider.addEventListener('mousedown', (e) => {
+        isDown = true;
+        slider.classList.add('active');
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+        });
+        slider.addEventListener('mouseleave', () => {
+        isDown = false;
+        slider.classList.remove('active');
+        });
+        slider.addEventListener('mouseup', () => {
+        isDown = false;
+        slider.classList.remove('active');
+        });
+        slider.addEventListener('mousemove', (e) => {
+        if(!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 3; //scroll-fast
+        slider.scrollLeft = scrollLeft - walk;
+        console.log(walk);
+        });
+
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+          }
+          
+          // Close the dropdown menu if the user clicks outside of it
+          window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+              var dropdowns = document.getElementsByClassName("dropdown-content");
+              var i;
+              for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                  openDropdown.classList.remove('show');
+                }
+              }
+            }
+          }
+    </script>
 {% endblock %}

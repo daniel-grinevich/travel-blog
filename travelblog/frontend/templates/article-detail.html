@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block content %}
+    <div class="navbar">
+        <div class="nav-contents">
+            <div class="logo">
+                <h3>Logo</h3>
+            </div>
+            <div class="links">
+                <a>Test 1</a>
+                <a>Test 2</a>
+                <a>Test 1</a>
+                <a>Test 2</a>
+            </div>
+        </div>
+    </div>
+    <section class="hero-article">
+        <div class="content-article">
+            <img class="article-img" src="{{ article.showcase_image.url }}"/>
+        </div>
+    </section>
+    <div class="article-container">
+        <div class="article-info">
+            <div class="column width-50">
+                <div class="layout-grid">
+                    <div class="title">
+                        <h5>Article Title</h5>
+                        <h4>{{article.title}}</h4>
+                    </div>
+                    <div class="location">
+                        <h5>Location</h5>
+                        <h4>{{article.city}}, {{article.country}}</h4>
+                    </div>
+                    <div class="date">
+                        <h5>Date</h5>
+                        <h4>{{article.created_at | date:'b d, Y' | title}}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="column width-50">
+                <div class="description">
+                    <h5>Description</h5>
+                    {{article.body | safe }}
+                </div>
+            </div>
+        </div>
+        <div class="article-info notecard">
+            <div class="column width-50">
+                <h2>{{ article.category.name }}</h2>
+            </div>
+            <div class="column width-50">
+                <h2>{{ article.category }}</h2>
+            </div>
+        </div>
+        {% for s in sections %}
+        <div class="article-section">
+            {{ s.header }}
+            {{ s.body | safe }}
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        const heroImage = document.querySelector('section.hero-article div.content-article img.article-img');
+        $(document).on('scroll', function() {
+            var pixelTop = $(document).scrollTop()
+            var documentHeight = $(document).height()
+            var windowHeight = $(window).height()
+            var percentage = ((100 * pixelTop) / (documentHeight - windowHeight))
+            var decimal = percentage / 100
+            var half = decimal * (3/4)
+            var check = 1 - half
+            if (check > .7) {
+                console.log("we are here")
+                let num1 = (1-half)
+                let num2 = (1-half)
+                let num3 = 1
+                heroImage.style.transform = `scale3d(${num1}, ${num2}, ${num3})`
+            }
+            else {
+                console.log("else")
+            }
+            
+
+        })
+        
+    </script>
+{% endblock %}

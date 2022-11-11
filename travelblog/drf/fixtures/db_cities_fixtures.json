@@ -1,0 +1,32 @@
+[{
+    "model": "article.city",
+    "id": "1",
+    "fields": {
+        "name": "Sadabe",
+        "rank": "1"
+    }
+  },
+  {
+    "model": "article.city",
+    "id": "2",
+    "fields": {
+        "name": "Taokeng",
+        "rank": "2"
+    }
+  },
+  {
+    "model": "article.city",
+    "id": "3",
+    "fields": {
+        "name": "Ciheras",
+        "rank": "3"
+    }
+  },
+  {
+    "model": "article.city",
+    "id": "4",
+    "fields": {
+        "name": "Wenwuba",
+        "rank": "4"
+    }
+  }]

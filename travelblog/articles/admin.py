@@ -1,24 +1,26 @@
 from django.contrib import admin
 from travelblog.articles.models import Article, Section, City, Country, Link, Media, Category
-from adminsortable2.admin import SortableInlineAdminMixin,SortableAdminBase
+from adminsortable2.admin import SortableInlineAdminMixin,SortableAdminBase,SortableAdminMixin
 from mptt.admin import MPTTModelAdmin
+from travelblog.frontend.models import HomePage
 # class SectionAdmin(SortableInlineAdminMixin, admin.StackedInline):
 #     list_display = ('header','body')
 #     model = Section
 
 
-class SectionAdmin(admin.StackedInline):
-    list_display = ('header','body','rank')
+class SectionAdmin(SortableInlineAdminMixin,admin.StackedInline):
+    list_display = ('rank','header','body')
     model = Section
 
 class LinkAdmin(SortableInlineAdminMixin, admin.StackedInline):
-    list_display = ('header','body')
+    list_display = ('slug','text')
     model = Link
 
-class ArticleBaseAdmin(SortableAdminBase,admin.ModelAdmin):
-    list_display = ('title','body','is_visible','featured_home','country','city')
-    list_filter = ('is_visible','featured_home','created_at')
+class ArticleBaseAdmin(SortableAdminMixin, SortableAdminBase,admin.ModelAdmin):
+    list_display = ('title','country','city','is_visible','featured_home', 'homepage')
+    list_filter = ('is_visible','featured_home','created_at','homepage__style')
     prepopulated_fields = {"slug": ("title",)}
+    search_fields = ['title']
     inlines = [
         SectionAdmin
     ]
@@ -28,6 +30,7 @@ class ArticleBaseAdmin(SortableAdminBase,admin.ModelAdmin):
         'show_article_on_blog',
         'hide_article_from_homepage',
         'show_article_on_homepage',
+        'article_to_featured_section',
     ]
 
     def hide_article_from_blog(self,request,queryset):
@@ -39,15 +42,21 @@ class ArticleBaseAdmin(SortableAdminBase,admin.ModelAdmin):
         return
 
     def hide_article_from_homepage(self,request,queryset):
-        queryset.update(featured_home = True)
+        queryset.update(featured_home = False)
         return
 
     def show_article_on_homepage(self,request,queryset):
         queryset.update(featured_home = True)
         return
+    
+    def article_to_featured_section(self,request,queryset):
+        feature = HomePage.objects.get(style='F')
+        queryset.update(homepage=feature)
+        return
 
-class SectionBaseAdmin(SortableAdminBase,admin.ModelAdmin):
+class SectionBaseAdmin(SortableAdminMixin,SortableAdminBase,admin.ModelAdmin):
     list_display = ('header','body','article')
+    search_fields = ['article__title']
     inlines = [
         LinkAdmin
     ]
@@ -63,6 +72,7 @@ class SectionBaseAdmin(SortableAdminBase,admin.ModelAdmin):
 
 
 # Register your models here.
+admin.site.register(Link)
 admin.site.register(Article, ArticleBaseAdmin)
 admin.site.register(Section, SectionBaseAdmin)
 admin.site.register(City)

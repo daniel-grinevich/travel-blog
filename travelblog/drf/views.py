@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import viewsets, permissions, mixins
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.renderers import TemplateHTMLRenderer
 from travelblog.articles.models import Category, Article, HomePage
@@ -58,6 +59,25 @@ class ArticleByHomepageStyle(APIView):
         serializer = ArticleSerializer(queryset, many=True)
         return Response(serializer.data)
 
+class ArticleViewset(
+    viewsets.GenericViewSet,
+    mixins.ListModelMixin,
+):
+    """
+    Get all articles visible on homepage and by homepage style 
+    """
+
+    queryset = Article.objects.all()
+
+    def list(self, request, slug=None):
+        queryset= Article.objects.filter(
+            homepage__style=slug,
+        ).filter(featured_home=True)
+        serializer = ArticleSerializer(queryset, context={'request':request}, many=True)
+        return Response(serializer.data)
+
+
+
 class HomePageList(APIView):
     """
     Get homepage styles and linked articles
@@ -75,3 +95,4 @@ class HomePageActiveArticleList(APIView):
         queryset = HomePage.objects.all().filter(article__featured_home=True)
         serializer = HomePageSerializer(queryset, many=True)
         return Response(serializer.data)
+

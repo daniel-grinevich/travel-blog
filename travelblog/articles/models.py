@@ -3,7 +3,7 @@ from tinymce.models import HTMLField
 from travelblog.frontend.models import HomePage
 from mptt.models import MPTTModel, TreeForeignKey, TreeManyToManyField
 
-class Category(MPTTModel):
+class Category(models.Model):
     """
     Inventory Category table implimented with MPTT
     """
@@ -25,16 +25,6 @@ class Category(MPTTModel):
     )
     is_active = models.BooleanField(
         default=True,
-    )
-    parent = TreeForeignKey(
-        "self",
-        on_delete=models.PROTECT,
-        related_name="children",
-        null=True,
-        blank=True,
-        unique=False,
-        verbose_name="parent of category",
-        help_text="format: not required",
     )
 
     class MPTTMeta:
@@ -127,13 +117,17 @@ class Article(models.Model):
         related_name='city',
         on_delete=models.PROTECT,
     )
-    category = TreeManyToManyField(Category)
+    category = models.ForeignKey(
+        Category,
+        related_name='category',
+        on_delete=models.PROTECT,
+    )
     rank = models.IntegerField(
         default=0,
         null=False,
         unique=False,
         blank=False,
-        verbose_name='ranking order of articles',
+        verbose_name='rank',
         help_text='format: required, higher rank has higher priority'
     )
     is_visible = models.BooleanField(
@@ -141,7 +135,7 @@ class Article(models.Model):
         null=False,
         unique=False,
         blank=False,
-        verbose_name='article visible',
+        verbose_name='Article visible',
         help_text='format: required, default=True, True = Visible False = Not visible'
     )
     featured_home = models.BooleanField(
@@ -149,7 +143,7 @@ class Article(models.Model):
         null=False,
         unique=False,
         blank=False,
-        verbose_name='article visible on home page',
+        verbose_name='Homepage visible',
         help_text='format: required, default=False, True = Visible False = Not visible'
     )
     homepage = models.ForeignKey(
@@ -165,7 +159,16 @@ class Article(models.Model):
         upload_to='images/',
         default='images/default.png',
         verbose_name='Article Feature Image',
-        help_text='format: not required, but model should have image or video',
+        help_text='format: 1200 x 16000, not required',
+    )
+    showcase_image = models.ImageField(
+        unique=False,
+        null=False,
+        blank=False,
+        upload_to='images/',
+        default='images/default.png',
+        verbose_name='Article Showcase Image',
+        help_text='format: 1440 x 900, required',
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -187,7 +190,6 @@ class Article(models.Model):
 
     def viewable_sections(self):
         return self.section_set.all()
-    
 
 class Section(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -261,7 +263,7 @@ class Link(models.Model):
         ordering = ('-rank', 'text', 'id')
 
     def __str__(self):
-        return self.header
+        return self.text
 
 class Media(models.Model):
     id = models.BigAutoField(primary_key=True)

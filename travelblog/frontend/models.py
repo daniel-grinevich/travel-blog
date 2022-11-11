@@ -41,6 +41,9 @@ class HomePage(models.Model):
     def viewable_articles(self):
         return self.article_set.all()
 
+    def get_first_featured_image(self):
+        return self.article_set.all()
+
 class NavLink(models.Model):
     id = models.BigAutoField(primary_key=True)
     slug = models.SlugField(

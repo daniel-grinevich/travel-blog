@@ -1,3 +1,4 @@
+from asyncio import AbstractChildWatcher
 from travelblog.articles.models import Category, Article, HomePage
 from rest_framework import serializers
 
@@ -11,12 +12,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
             model = Article
-            fields = [
-                'title',
-                'slug',
-                'featured_home',
-                'is_visible',
-            ]
+            fields = '__all__'
             read_only = True
             editable = False
             depth = 2
@@ -31,7 +27,7 @@ class HomePageSerializer(serializers.ModelSerializer):
                 'subheader',
                 'style',
                 'rank',
-                'article'
+                'article',
             ]
             read_only = True
             editable = False

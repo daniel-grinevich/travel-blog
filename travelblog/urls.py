@@ -16,9 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from travelblog.drf import views as drfview
+from django.conf.urls.static import static 
+from django.conf import settings
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(
+    r'api/articles/featured/style/(?P<slug>[^/.]+)', drfview.ArticleViewset, basename="whatever"
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('root/',include(router.urls)),
     path('api/articles/category/all/', drfview.CategoryList.as_view()),
     path('api/articles/category/all/view/', drfview.CategoryListTemplate.as_view()),
     path('api/articles/all/', drfview.ArticleList.as_view()),
@@ -28,6 +37,8 @@ urlpatterns = [
     path('api/homepage/featured/all', drfview.HomePageActiveArticleList.as_view()),
     path('', include('travelblog.frontend.urls')),
 ]
+urlpatterns+= static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
 admin.site.site_header = f"Mili's admin protal"
 admin.site.site_title = f"Mili's admin protal"
